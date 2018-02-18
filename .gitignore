@@ -1,1 +1,2 @@
-/bubble_sort/target/
+.gitignore
+bubble_sort/target/
