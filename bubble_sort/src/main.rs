@@ -1,18 +1,25 @@
-fn main() {
+n main() {
     let input: [i32; 5] = [5, 2, 4, 3, 1];
-    let mut output = input.clone();
+    let mut cloned_input = input.clone();
+    let output = bubble_sort(&mut cloned_input);
+    print(output);
+}
 
-    for m in 0..output.len() {
-        for n in 0..output.len() {
-            if output[m] < output[n] {
-                output.swap(m, n);
+fn bubble_sort(input: &mut [i32]) -> &mut [i32] {
+    let input_len = input.len();
+
+    for i in 0..input_len {
+        for j in 1..(input_len - i) {
+            if input[j-1] > input[j] {
+                input.swap(j-1, j);
             }
         }
     }
-    
-    println!("{}", output[0]);
-    println!("{}", output[1]);
-    println!("{}", output[2]);
-    println!("{}", output[3]);
-    println!("{}", output[4]);
+    input
+}
+
+fn print(output: &mut [i32]) {
+    for j in 0..output.len() {
+        println!("{}", output[j]);
+    }
 }
