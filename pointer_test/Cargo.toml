@@ -1,0 +1,6 @@
+[package]
+name = "pointer_test"
+version = "0.1.0"
+authors = ["zettaittenani <zettaittenani@gmail.com>"]
+
+[dependencies]
