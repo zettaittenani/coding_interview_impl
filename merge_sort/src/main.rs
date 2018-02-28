@@ -1,29 +1,44 @@
+static mut sorted: Vec<i32> = vec![];
+
 fn main() {
-    let input: [i32; 10] = [5, 2, 6, 8, 3, 4, 1, 10, 9, 7];
-    let mut output = input.clone();
-    let middle_id: usize = input.len() / 2;
+    let input: Vec<i32> = vec![5, 2, 6, 8, 3, 4, 1, 10, 9, 7];
+    let mut cloned_input: Vec<i32> = input.clone();
+    let start_id: usize = 0;
+    let end_id: usize = cloned_input.len();
 
-    _merge_sort(&mut output, middle_id);
+    _merge_sort(&mut cloned_input, start_id, end_id);
 
-    for i in 0..output.len() {
-        println!("{}", output[i]);
+    unsafe {
+        for i in 0..sorted.len() {
+            println!("{}", sorted[i]);
+        }
     }
 }
 
-fn _merge_sort(slice: &mut [i32], middle_id: usize) {
+fn _merge_sort(slice: &mut [i32], start_id: usize, end_id: usize) {
+    if end_id <= start_id {
+        return
+    }
+
+    let mut middle_id = (start_id + end_id) / 2;
     let (mut left, mut right) = slice.split_at_mut(middle_id);
-    let left_middle_id: usize = left.len() / 2;
-    let right_middle_id: usize = right.len() / 2;
 
-    if (left.len()> 2) || (right.len() > 2) {
-        _merge_sort(left, left_middle_id);
-        _merge_sort(right, right_middle_id);
-    }
+    _merge_sort(left, start_id, middle_id);
+    _merge_sort(right, middle_id + 1, end_id);
 
-    _merge(left, right);
+    _merge(left, right, start_id, middle_id, end_id)
 }
 
-fn _merge(left: &mut [i32], right: &mut [i32]) {
-    // TODO impl
-    println!("left: {}, right: {}", left[0], right[0])
+fn _merge(left: &mut [i32], right: &mut [i32], start_id: usize, middle_id: usize, end_id: usize) {
+    for i in start_id..middle_id {
+        for j in (middle_id  + 1)..end_id {
+            unsafe {
+                if left[i] < right[j] {
+                    sorted[i] = left[i];
+                } else {
+                    sorted[i] = right[j];
+                }
+            }
+        }
+    }
 }
