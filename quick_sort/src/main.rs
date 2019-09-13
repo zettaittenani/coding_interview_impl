@@ -17,8 +17,6 @@ fn quick_sort(slice: &mut Vec<u8>) -> Vec<u8> {
                     slice.swap(i, j);
                     split = j;
                 }
-                // println!("{:?}", pivot);
-                // println!("{:?}", slice);
             }
         }
     }
