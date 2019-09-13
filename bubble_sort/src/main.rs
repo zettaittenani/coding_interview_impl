@@ -1,4 +1,4 @@
-n main() {
+fn main() {
     let input: [i32; 5] = [5, 2, 4, 3, 1];
     let mut cloned_input = input.clone();
     let output = bubble_sort(&mut cloned_input);

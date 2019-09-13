@@ -1,58 +1,42 @@
 fn main() {
-    let input: Vec<usize> = vec![5, 2, 6, 8, 3, 4, 1, 10, 9, 7];
-    let mut output: Vec<usize> = input.clone();
-    let mut work: Vec<usize> = vec![0; 10];
-    let start_id: usize = 0;
-    let end_id: usize = output.len() - 1;
-
-    _merge_sort(&mut output, &mut work, start_id, end_id);
-
-    for i in 0..output.len() {
-        println!("{}", output[i]);
+    let mut input: Vec<u8> = vec![5, 2, 6, 8, 3, 4, 1, 10, 9, 7];
+    let merged = merge_sort(&mut input);
+    for elem in &merged {
+        println!("{}", elem);
     }
 }
 
-fn _merge_sort(slice: &mut [usize], work: &mut [usize], start_id: usize, end_id: usize) {
-    if end_id <= start_id {
-        return
+fn merge_sort(array: &mut Vec<u8>) -> Vec<u8> {
+    let half = array.len() / 2;
+    let mut left: Vec<u8> = array[0..half].to_vec();
+    let mut right: Vec<u8> = array[half..(array.len())].to_vec();
+
+    if 1 <= left.len() {
+        left = merge_sort(&mut left);
+        right = merge_sort(&mut right);
     }
 
-    let middle_id: usize = (start_id + end_id) / 2;
+    merge(&mut left, &mut right)
+}
 
-    _merge_sort(slice, work, start_id, middle_id);
-    _merge_sort(slice, work, (middle_id + 1), end_id);
+fn merge(left: &mut Vec<u8>, right: &mut Vec<u8>) -> Vec<u8> {
+    let mut ret: Vec<u8> = vec![];
 
-    let mut i: usize = start_id;
-    let mut m: usize = start_id;
-    let mut n: usize = end_id;
-
-    while m <= middle_id {
-        work[i] = slice[m];
-        i += 1;
-        m += 1;
-    }
-
-    i = middle_id + 1;
-
-    while n >= (middle_id + 1) {
-        work[i] = slice[n];
-        i += 1;
-        n -= 1;
-    }
-
-    let mut j: usize = start_id;
-    let mut k: usize = end_id;
-    let mut l: usize = start_id;
-
-    while l <= end_id {
-        if work[j] <= work[k] {
-            slice[l] = work[j];
-            j += 1;
-            l += 1;
+    loop {
+        if left.is_empty() && right.is_empty() {
+            break;
+        } else if left.is_empty() {
+            ret.push(right.remove(0));
+        } else if right.is_empty() {
+            ret.push(left.remove(0));
         } else {
-            slice[l] = work[k];
-            k -= 1;
-            l += 1;
+            if left.first() < right.first() {
+                ret.push(left.remove(0));
+            } else {
+                ret.push(right.remove(0));
+            }
         }
     }
+
+    ret
 }
